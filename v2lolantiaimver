@@ -1,0 +1,865 @@
+--// Nosss didn't make this script, All credits to "3c" on V3rmillion for this bypass method
+
+--// Roblox Group ( TeamNosss! ): https://www.roblox.com/groups/16003304/TeamNosss#!/about
+
+--[[ 
+
+	I did add the real mouse position function thats all 
+
+--]]
+
+
+local DeepFakePosition = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nosssa/NossLock/main/GetRealMousePosition"))() 
+task.wait()
+
+
+--//Services
+local China = setmetatable({}, {
+   __index = function(Company, Price)
+       return game:GetService(Price)
+   end})
+   
+local ChinaWorld = China.Workspace
+local Society = China.Players
+local ChineseDeporation = China.ReplicatedStorage
+local ChinaInputService = China.UserInputService
+
+--//Variables
+local ChingChong = Society.LocalPlayer
+local Cat =  "meow!!" and ChingChong:GetMouse()
+
+local ChineseEvent = ChineseDeporation:FindFirstChild("MainEvent") or nil
+local Payment = "Hello Da Hoodian!" and nil
+
+ChineseBypass = function(ChineseEntity)
+   local KimJongUn = ChineseEntity.ChildAdded:Connect(function(credit)
+       if credit:IsA("Tool") then
+           Payment = credit.Activated:Connect(function()
+               if ChineseEvent then
+                   ChineseEvent:FireServer("UpdateMousePos", Cat.Hit.Position)
+               end
+           end)
+       end
+   end)
+end
+
+local RandomChinese = function(RandomCredit)
+   return type(RandomCredit) == "number" and math.random(-RandomCredit, RandomCredit) or 0
+end
+
+local ChinaAlive = function(ChinesePlayer)
+   return ChinesePlayer and ChinesePlayer.Character and ChinesePlayer.Character:FindFirstChild("Humanoid") and ChinesePlayer.Character:FindFirstChild("Head") or false
+end
+
+ChingChong.CharacterAdded:Connect(function(NewChingChong)
+   ChineseBypass(NewChingChong)
+end)
+
+if ChinaAlive(ChingChong) then
+   ChingChong.Character.Humanoid:UnequipTools()
+   ChineseBypass(ChingChong.Character)
+end
+
+local ChinaHook
+ChinaHook = hookmetamethod(game, "__namecall", function(self, ...)
+   local ChinaArgs = {...}
+   local DeportationMethod = getnamecallmethod()
+
+   if not checkcaller() and DeportationMethod == "FireServer" and self.Name == "MainEvent" and ChinaArgs[1] == "UpdateMousePos" and "chungusdian" then
+
+       ChinaArgs[2] = "Scarcin made this" and _G.FetchPosition() -- was V3.zero
+       
+       return self.FireServer(self, unpack(ChinaArgs))
+   end
+   
+   return ChinaHook(self, ...)
+end)
+
+
+
+local Players = game:GetService("Players")
+local Client = game:GetService("Players").LocalPlayer
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local RunService = game:GetService("RunService")
+local Camera = game:GetService("Workspace").CurrentCamera
+local Ping = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
+local SilentAimFOV = Drawing.new("Circle")
+local AimAssistFOV = Drawing.new("Circle")
+local SilentAimTarget
+local AimAssistTarget
+
+SilentAimFOV.Color = getgenv().Void.FOV.SilentAim.Color
+SilentAimFOV.Thickness = getgenv().Void.FOV.SilentAim.Thickness
+SilentAimFOV.Filled = getgenv().Void.FOV.SilentAim.Filled
+SilentAimFOV.Transparency = getgenv().Void.FOV.SilentAim.Transparency
+SilentAimFOV.NumSides = getgenv().Void.FOV.SilentAim.NumSides
+
+AimAssistFOV.Color = getgenv().Void.FOV.AimAssist.Color
+AimAssistFOV.Thickness = getgenv().Void.FOV.AimAssist.Thickness
+AimAssistFOV.Filled = getgenv().Void.FOV.AimAssist.Filled
+AimAssistFOV.Transparency = getgenv().Void.FOV.AimAssist.Transparency
+AimAssistFOV.NumSides = getgenv().Void.FOV.AimAssist.NumSides
+
+local UpdateFOV = function()
+    if not SilentAimFOV and AimAssistFOV then
+        return SilentAimFOV and AimAssistFOV
+    end
+    SilentAimFOV.Visible = getgenv().Void.FOV.SilentAim.ShowFOV
+    SilentAimFOV.Radius = getgenv().Void.FOV.SilentAim.FOV * 5
+    SilentAimFOV.Position = Vector2.new(Mouse.X, Mouse.Y + (game:GetService("GuiService"):GetGuiInset().Y))
+
+    AimAssistFOV.Visible = getgenv().Void.FOV.AimAssist.ShowFOV
+    AimAssistFOV.Radius = getgenv().Void.FOV.AimAssist.FOV * 5
+    AimAssistFOV.Position = Vector2.new(Mouse.X, Mouse.Y + (game:GetService("GuiService"):GetGuiInset().Y))
+    return SilentAimFOV and AimAssistFOV
+end
+RunService.Heartbeat:Connect(UpdateFOV)
+
+local grmt = getrawmetatable(game)
+local backupindex = grmt.__index
+setreadonly(grmt, false)
+grmt.__index = newcclosure(function(self, v)
+    if (getgenv().Void.SilentAim.Enabled and Mouse and tostring(v) == "Hit") then
+        if SilentAimTarget and SilentAimTarget.Character then
+            if getgenv().Void.SilentAim.Predict then
+                local endpoint = game.Players[tostring(SilentAimTarget)].Character[getgenv().Void.SilentAim.AimPart]
+                                     .CFrame +
+                                     (game.Players[tostring(SilentAimTarget)].Character[getgenv().Void.SilentAim.AimPart]
+                                         .Velocity * getgenv().Void.SilentAim.Prediction)
+                return (tostring(v) == "Hit" and endpoint)
+            else
+                local endpoint = game.Players[tostring(SilentAimTarget)].Character[getgenv().Void.SilentAim.AimPart]
+                                     .CFrame
+                return (tostring(v) == "Hit" and endpoint)
+            end
+        end
+    end
+    return backupindex(self, v)
+end)
+
+local WorldToScreenPoint = function(Object)
+    local ObjectVector = Camera:WorldToScreenPoint(Object.Position)
+    return Vector2.new(ObjectVector.X, ObjectVector.Y)
+end
+local IsOnScreen = function(Object)
+    local IsOnScreen = Camera:WorldToScreenPoint(Object.Position)
+    return IsOnScreen
+end
+local NoMeshPart = function(Object)
+    if string.find(Object.Name, "Gun") then
+        return
+    end
+    if table.find({"Part", "MeshPart", "BasePart"}, Object.ClassName) then
+        return true
+    end
+end
+local WallCheck = function(destination, ignore)
+    local Origin = Camera.CFrame.p
+    local CheckRay = Ray.new(Origin, destination - Origin)
+    local Hit = game.workspace:FindPartOnRayWithIgnoreList(CheckRay, ignore)
+    return Hit == nil
+end
+local PlayerMouseFunction = function()
+    local Target, Closest = nil, 1 / 0
+    for _, v in pairs(Players:GetPlayers()) do
+        if getgenv().Void.Checks.WallCheck then
+            if (v.Character and v ~= Client and v.Character:FindFirstChild("HumanoidRootPart")) then
+                local Position, OnScreen = Camera:WorldToScreenPoint(v.Character.HumanoidRootPart.Position)
+                local Distance = (Vector2.new(Position.X, Position.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+
+                if (SilentAimFOV.Radius > Distance and Distance < Closest and OnScreen) and
+                    WallCheck(v.Character.HumanoidRootPart.Position, {Client, v.Character}) then
+                    Closest = Distance
+                    Target = v
+                end
+            end
+        else
+            if (v.Character and v ~= Client and v.Character:FindFirstChild("HumanoidRootPart")) then
+                local Position, OnScreen = Camera:WorldToScreenPoint(v.Character.HumanoidRootPart.Position)
+                local Distance = (Vector2.new(Position.X, Position.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+
+                if (SilentAimFOV.Radius > Distance and Distance < Closest and OnScreen) then
+                    Closest = Distance
+                    Target = v
+                end
+            end
+        end
+    end
+    return Target
+end
+local PlayerMouseFunction2 = function()
+    local Target, Closest = nil, AimAssistFOV.Radius * 1.27
+    for _, v in pairs(Players:GetPlayers()) do
+        if (v.Character and v ~= Client and v.Character:FindFirstChild("HumanoidRootPart")) then
+            if getgenv().Void.Checks.WallCheck then
+                local Position, OnScreen = Camera:WorldToScreenPoint(v.Character.HumanoidRootPart.Position)
+                local Distance = (Vector2.new(Position.X, Position.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                if (Distance < Closest and OnScreen) and
+                    WallCheck(v.Character.HumanoidRootPart.Position, {Client, v.Character}) then
+                    Closest = Distance
+                    Target = v
+                end
+            else
+                local Position, OnScreen = Camera:WorldToScreenPoint(v.Character.HumanoidRootPart.Position)
+                local Distance = (Vector2.new(Position.X, Position.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                if (Distance < Closest and OnScreen) then
+                    Closest = Distance
+                    Target = v
+                end
+            end
+        end
+    end
+    return Target
+end
+local BodyPartFunction = function(character)
+    local ClosestDistance = 1 / 0
+    local BodyPart = nil
+    if (character and character:GetChildren()) then
+        for _, x in next, character:GetChildren() do
+            if NoMeshPart(x) and IsOnScreen(x) then
+                local Distance = (WorldToScreenPoint(x) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                if (SilentAimFOV.Radius > Distance and Distance < ClosestDistance) then
+                    ClosestDistance = Distance
+                    BodyPart = x
+                end
+            end
+        end
+    end
+    return BodyPart
+end
+local BodyPartFunction2 = function(character)
+    local ClosestDistance = 1 / 0
+    local BodyPart = nil
+
+    if (character and character:GetChildren()) then
+        for _, x in next, character:GetChildren() do
+            if NoMeshPart(x) and IsOnScreen(x) then
+                local Distance = (WorldToScreenPoint(x) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                if (Distance < ClosestDistance) then
+                    ClosestDistance = Distance
+                    BodyPart = x
+                end
+            end
+        end
+    end
+    return BodyPart
+end
+task.spawn(function()
+    while task.wait() do
+        if getgenv().Void.SilentAim.Enabled then
+            SilentAimTarget = PlayerMouseFunction()
+        end
+        if AimAssistTarget then
+            if getgenv().Void.AimAssist.Enabled and (AimAssistTarget.Character) and
+                getgenv().Void.AimAssist.NearestPoint then
+                getgenv().Void.AimAssist.Aimpart = tostring(BodyPartFunction2(AimAssistTarget.Character))
+            end
+        end
+        if SilentAimTarget then
+            if getgenv().Void.SilentAim.Enabled and (SilentAimTarget.Character) and
+                getgenv().Void.SilentAim.NearestPart then
+                getgenv().Void.SilentAim.AimPart = tostring(BodyPartFunction(SilentAimTarget.Character))
+            end
+        end
+    end
+end)
+Mouse.KeyDown:Connect(function(Key)
+    if getgenv().Void.FOV.SilentAim.KeybindEnabled then
+        if (Key == getgenv().Void.FOV.SilentAim.Keybind:lower()) then
+            if getgenv().Void.FOV.SilentAim.ShowFOV == true then
+                getgenv().Void.FOV.SilentAim.ShowFOV = false
+            else
+                getgenv().Void.FOV.SilentAim.ShowFOV = true
+            end
+            if getgenv().Void.FOV.AimAssist.KeybindEnabled then
+                if (Key == getgenv().Void.FOV.AimAssist.Keybind:lower()) then
+                    if getgenv().Void.FOV.AimAssist.ShowFOV == true then
+                        getgenv().Void.FOV.AimAssist.ShowFOV = false
+                    else
+                        getgenv().Void.FOV.AimAssist.ShowFOV = true
+                    end
+                end
+                if getgenv().Void.SilentAim.KeybindEnabled then
+                    if (Key == getgenv().Void.SilentAim.Keybind:lower()) then
+                        if getgenv().Void.SilentAim.Enabled == true then
+                            getgenv().Void.SilentAim.Enabled = false
+                        else
+                            getgenv().Void.SilentAim.Enabled = true
+                        end
+                    end
+                end
+            end
+        end
+        if (Key == getgenv().Void.AimAssist.Keybind:lower()) then
+            if getgenv().Void.AimAssist.Enabled == true then
+                IsTargetting = not IsTargetting
+                if IsTargetting then
+                    AimAssistTarget = PlayerMouseFunction2()
+                else
+                    if AimAssistTarget ~= nil then
+                        AimAssistTarget = nil
+                        IsTargetting = false
+                    end
+                end
+            end
+        end
+    end
+    if getgenv().Void.Resolver.KeybindEnabled then
+        if (Key == getgenv().Void.Resolver.Keybind:lower()) then
+            if getgenv().Void.Resolver.Enabled == true then
+                getgenv().Void.Resolver.Enabled = false
+            else
+                getgenv().Void.Resolver.Enabled = true
+            end
+        end
+    end
+end)
+if getgenv().Void.Checks.CrewCheck then
+    while true do
+        local newPlayer = game.Players.PlayerAdded:wait()
+        if player:IsInGroup(newPlayer.Group) then
+            table.insert(Ignored.Players, newPlayer)
+        end
+    end
+end
+if getgenv().Void.Checks.FriendCheck then
+    game.Players.PlayerAdded:Connect(function(SilentAimTarget)
+        if Client:IsFriendsWith(SilentAimTarget) then
+            local newPlayer = game.Players.PlayerAdded:wait()
+            table.insert(Ignored.Players, newPlayer)
+        end
+    end)
+end
+
+
+
+
+
+function TargetLegitness(Target)
+    if getgenv().Void.Checks.KOCheck == true and Target.Character then
+    return Target.Character.BodyEffects["K.O"].Value and true or false
+    end
+    return false
+    end
+
+    function PredictionictTargets(Target, Value)
+    return Target.Character[getgenv().Void.SilentAim.AimPart].CFrame +
+    (Target.Character.Humanoid.MoveDirection * Value * 16)
+    end
+
+
+
+
+
+
+
+
+
+    local grmt = getrawmetatable(game)
+    local backupindex = grmt.index
+    setreadonly(grmt, false)
+    
+    grmt.index = newcclosure(function(self, v)
+        if (Settings.Silent.Enabled and Mouse and tostring(v) == "Hit") then
+    
+            Prey = ClosestPlrFromMouse()
+    
+            if Prey then
+                local endpoint = game.Players[tostring(Prey)].Character[Void.SilentAim.AimPart].CFrame + (
+                    game.Players[tostring(Prey)].Character[Void.SilentAim.AimPart].Velocity * Void.SilentAim.Prediction
+                )
+                return (tostring(v) == "Hit" and endpoint)
+            end
+        end
+        return backupindex(self, v)
+    end)
+    
+            local grmt = getrawmetatable(game)
+            local index = grmt.index
+            local properties = {
+                "Hit"
+            }
+            setreadonly(grmt, false)
+    
+            grmt.index =
+                newcclosure(
+                function(self, v)
+                    if Mouse and (table.find(properties, v)) then
+                        prey = GetClosestToMouse()
+                        if prey ~= nil and getgenv().Void.SilentAim.Enabled and not TargetChecks(prey) then
+                            local endpoint = predictTargets(prey, getgenv().Void.SilentAim.Prediction)
+    
+                            return (table.find(properties, tostring(v)) and endpoint)
+                        end
+                    end
+                    return index(self, v)
+                end
+            )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getgenv().Extra = {
+    ["Enabled"] = (getgenv().Void.GunFOV.Enabled),
+    ["Double-Barrel SG"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.DoubleBarrel)
+    },
+    ["DoubleBarrel"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.DoubleBarrel)
+    },
+    ["Revolver"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Revolver)
+    },
+    ["SMG"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Smg)
+    },
+    ["Shotgun"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Shotgun)
+    },
+    ["TacticalShotgun"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.TacticalShotgun)
+    },
+    ["Rifle"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Rifle)
+    },
+    ["Silencer"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Silencer)
+    },
+    ["SilencerAR"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.SilencerAR)
+    },
+    ["Glock"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.Glock)
+    },
+    ["AK47"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.AK47)
+    },
+    ["AR"] = {
+        ["FOV"] = (getgenv().Void.GunFOV.AR)
+    }
+}
+
+local Script = {
+    Functions = {}
+}
+Script.Functions.getToolName = function(name)
+    local split = string.split(string.split(name, "[")[2], "]")[1]
+    return split
+end
+Script.Functions.getEquippedWeaponName = function()
+    if (Client.Character) and Client.Character:FindFirstChildWhichIsA("Tool") then
+        local Tool = Client.Character:FindFirstChildWhichIsA("Tool")
+        if string.find(Tool.Name, "%[") and string.find(Tool.Name, "%]") and not string.find(Tool.Name, "Wallet") and
+            not string.find(Tool.Name, "Phone") then
+            return Script.Functions.getToolName(Tool.Name)
+        end
+    end
+    return nil
+end
+RunService.RenderStepped:Connect(function()
+    if getgenv().Void.SilentAim.Enabled then
+        if getgenv().Void.Checks.KOCheck == true and SilentAimTarget and SilentAimTarget.Character then
+            local KOd = SilentAimTarget.Character:WaitForChild("BodyEffects")["K.O"].Value
+            local Grabbed = SilentAimTarget.Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+            if KOd or Grabbed then
+                SilentAimTarget = nil
+            end
+        end
+    end
+    if getgenv().Void.AimAssist.Enabled == true then
+        if getgenv().Void.Checks.KOCheck == true and AimAssistTarget and AimAssistTarget.Character then
+            local KOd = AimAssistTarget.Character:WaitForChild("BodyEffects")["K.O"].Value
+            local Grabbed = AimAssistTarget.Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+            if KOd or Grabbed then
+                AimAssistTarget = nil
+                IsTargetting = false
+            end
+        end
+    end
+    if getgenv().Void.AimAssist.DisableOnEnemyDeath == true and AimAssistTarget and
+    AimAssistTarget.Character:FindFirstChild("Humanoid") then
+        if AimAssistTarget.Character.Humanoid.health < 2 then
+            AimAssistTarget = nil
+            IsTargetting = false
+        end
+    end
+    if getgenv().Void.AimAssist.DisableOnOwnDeath == true and AimAssistTarget and
+    AimAssistTarget.Character:FindFirstChild("Humanoid") then
+        if Client.Character.Humanoid.health < 2 then
+            AimAssistTarget = nil
+            IsTargetting = false
+        end
+    end
+    if getgenv().Void.FOV.AimAssist.Enabled == true and AimAssistTarget and AimAssistTarget.Character and
+    AimAssistTarget.Character:WaitForChild("HumanoidRootPart") then
+        if AimAssistFOV.Radius < (Vector2.new(Camera:WorldToScreenPoint(AimAssistTarget.Character.HumanoidRootPart.Position).X,
+            Camera:WorldToScreenPoint(AimAssistTarget.Character.HumanoidRootPart.Position).Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude then
+                AimAssistTarget = nil
+            IsTargetting = false
+        end
+    end
+    if getgenv().Void.AimAssist.Predict and AimAssistTarget and AimAssistTarget.Character and
+    AimAssistTarget.Character:FindFirstChild(getgenv().Void.AimAssist.Aimpart) then
+        if getgenv().Void.AimAssist.Shake.Enabled then
+            local Main = CFrame.new(Camera.CFrame.p,
+            AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Position +
+                AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Velocity *
+                    getgenv().Void.AimAssist.Prediction +
+                    Vector3.new(math.random(-getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength), math.random(
+                        -getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength), math.random(
+                        -getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength)) * 0.1)
+            Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().Void.AimAssist.Smoothness / 2,
+                Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+        else
+            local Main = CFrame.new(Camera.CFrame.p,
+            AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Position +
+                AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Velocity *
+                    getgenv().Void.AimAssist.Prediction)
+            Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().Void.AimAssist.Smoothness / 2,
+                Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+        end
+    elseif getgenv().Void.AimAssist.Predict == false and AimAssistTarget and AimAssistTarget.Character and
+    AimAssistTarget.Character:FindFirstChild(getgenv().Void.AimAssist.Aimpart) then
+        if getgenv().Void.AimAssist.Shake.Enabled then
+            local Main = CFrame.new(Camera.CFrame.p,
+            AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Position +
+                    Vector3.new(math.random(-getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength), math.random(
+                        -getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength), math.random(
+                        -getgenv().Void.AimAssist.Shake.Strength,
+                        getgenv().Void.AimAssist.Shake.Strength)) * 0.1)
+            Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().Void.AimAssist.Smoothness / 2,
+                Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+        else
+            local Main =
+                CFrame.new(Camera.CFrame.p, AimAssistTarget.Character[getgenv().Void.AimAssist.Aimpart].Position)
+            Camera.CFrame = Camera.CFrame:Lerp(Main, getgenv().Void.AimAssist.Smoothness / 2,
+                Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+        end
+    end
+    if Script.Functions.getEquippedWeaponName() ~= nil then
+        local WeaponSettings = getgenv().Extra[Script.Functions.getEquippedWeaponName()]
+        if WeaponSettings ~= nil and getgenv().Void.GunFOV.Enabled == true then
+            getgenv().Void.FOV.SilentAim.FOV = WeaponSettings.FOV
+        else
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.FOV.SilentAim.FOV
+        end
+    end
+     if getgenv().Void.RangeManagement.Enabled and getgenv().Void.RangeManagement.Type == "Both" and Client ~= nil and
+        (Client.Character) and SilentAimTarget and SilentAimTarget.Character then
+        if (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Close.CloseDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Close.CloseFOV
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Close.ClosePrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Mid.MidDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Mid.MidFOV
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Mid.MidPrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Far.FarDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Far.FarFOV
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Far.FarPrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.ReallyFar.ReallyFarDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.ReallyFar.ReallyFarFOV
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.ReallyFar.ReallyFarPrediction
+
+        end
+    end
+    if getgenv().Void.RangeManagement.Enabled and getgenv().Void.RangeManagement.Type == "Prediction" and Client ~= nil and
+        (Client.Character) and SilentAimTarget and SilentAimTarget.Character then
+        if (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Close.CloseDetection then
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Close.ClosePrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Mid.MidDetection then
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Mid.MidPrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Far.FarDetection then
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.Far.FarPrediction
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.ReallyFar.ReallyFarDetection then
+            getgenv().Void.SilentAim.Prediction = getgenv().Void.RangeManagement.ReallyFar.ReallyFarPrediction
+
+        end
+    end
+    if getgenv().Void.RangeManagement.Enabled and getgenv().Void.RangeManagement.Type == "FOV" and Client ~= nil and
+        (Client.Character) and SilentAimTarget and SilentAimTarget.Character then
+        if (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Close.CloseDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Close.CloseFOV
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Mid.MidDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Mid.MidFOV
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.Far.FarDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.Far.FarFOV
+
+        elseif (Client.Character.HumanoidRootPart.Position - SilentAimTarget.Character.HumanoidRootPart.Position).Magnitude <
+            getgenv().Void.RangeManagement.ReallyFar.ReallyFarDetection then
+            getgenv().Void.FOV.SilentAim.FOV = getgenv().Void.RangeManagement.ReallyFar.ReallyFarFOV
+
+        end
+    end
+end)
+            
+if getgenv().Void.Checks.AntiGroundShoots == true and Prey.Character:FindFirstChild("Humanoid") == Enum.HumanoidStateType.Freefall then
+    pcall(function()
+        local TargetVelv5 = Prey.Character[getgenv().Void.SilentAim.AimPart]
+        TargetVelv5.Velocity = Vector3.new(TargetVelv5.Velocity.X, (TargetVelv5.Velocity.Y * 0.2), TargetVelv5.Velocity.Z)
+        TargetVelv5.AssemblyLinearVelocity = Vector3.new(TargetVelv5.Velocity.X, (TargetVelv5.Velocity.Y * 0.2), TargetVelv5.Velocity.Z)
+    end)
+end
+if getgenv().Void.Customize.HitChance.Enabled then
+    if SilentAimTarget.Character.Humanoid.FloorMaterial == Enum.Material.Air then
+        getgenv().Void.SilentAim.HitChance = getgenv().Void.Customize.HitChance.AirHitChance
+    else
+        getgenv().Void.SilentAim.HitChance = getgenv().Void.Customize.HitChance.GroundHitChance
+    end
+end
+if getgenv().Void.Customize.Prediction.Enabled then
+    if SilentAimTarget.Character.Humanoid.FloorMaterial == Enum.Material.Air then
+        getgenv().Void.SilentAim.Prediction = getgenv().Void.Customize.Prediction.AirPrediction
+    else
+        getgenv().Void.SilentAim.Prediction = getgenv().Void.Customize.Prediction.GroundPrediction
+    end
+end
+if getgenv().Void.Customize.Smoothness.Enabled then
+    if AimAssistTarget.Character.Humanoid.FloorMaterial == Enum.Material.Air then
+        getgenv().Void.AimAssist.Smoothness = getgenv().Void.Customize.Smoothness.AirSmoothness
+    else
+        getgenv().Void.AimAssist.Smoothness = getgenv().Void.Customize.Smoothness.GroundSmoothness
+    end
+end
+if getgenv().Void.Customize.Shake.Enabled then
+    if AimAssistTarget.Character.Humanoid.FloorMaterial == Enum.Material.Air then
+        getgenv().Void.AimAssist.Shake.Strength = getgenv().Void.Customize.Shake.AirShake
+    else
+        getgenv().Void.AimAssist.Shake.Strength = getgenv().Void.Customize.Shake.GroundShake
+    end
+end
+Client.Chatted:Connect(function(message)
+    if getgenv().Void.Chat.Enabled then
+        local args = string.split(message, " ")
+        if args[1] == getgenv().Void.Chat.FOV and args[2] ~= nil then
+            getgenv().Void.FOV.SilentAim.FOV = tonumber(args[2])
+        end
+    end
+    if getgenv().Void.Chat.Enabled then
+        local args = string.split(message, " ")
+        if args[1] == getgenv().Void.Chat.Prediction and args[2] ~= nil then
+            getgenv().Void.SilentAim.Prediction = tonumber(args[2])
+        end
+    end
+    if getgenv().Void.Chat.Enabled then
+        local args = string.split(message, " ")
+        if args[1] == getgenv().Void.Chat.HitChance and args[2] ~= nil then
+            getgenv().Void.SilentAim.HitChance = tonumber(args[2])
+        end
+    end
+end)
+
+
+-- Define a function that finds the nearest point
+    function findNearestPoint(position)
+        local nearestPoint = nil
+        local shortestDistance = math.huge -- set an initial value that is very large
+    
+        -- Loop through all the parts in the workspace
+        for _, part in ipairs(workspace:GetParts()) do
+            -- Calculate the distance between the part and the given position
+            local distance = (part.Position - position).Magnitude
+    
+            -- Update the nearest point if the current part is closer
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPoint = part.Position
+            end
+        end
+    
+        return nearestPoint
+    end
+    
+    -- Example usage:
+    local position = Vector3.new(10, 5, 3)
+    local nearestPoint = findNearestPoint(position)
+    getgenv().macrospeed = 1
+
+
+
+local Player = game:GetService("Players").LocalPlayer
+local Mouse = Player:GetMouse()
+local SpeedGlitch = false
+Mouse.KeyDown:Connect(function(Key)
+    if Key == (Void.Macro.Key) and Void.Macro.Type == "normal" then
+    SpeedGlitch = not SpeedGlitch
+    if SpeedGlitch == true then
+    repeat task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "I", false, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "O", false, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "I", false, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, "O", false, game)
+    task.wait(macrospeed / 100)
+    until SpeedGlitch == false
+end
+end
+end)
+    Mouse.KeyDown:Connect(function(Key)
+    if Key == (Void.Macro.Key) and Void.Macro.Type == "mouse" then
+    SpeedGlitch = not SpeedGlitch
+    if SpeedGlitch == true then
+    repeat task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendMouseWheelEvent("0", "0", true, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendMouseWheelEvent("0", "0", false, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendMouseWheelEvent("0", "0", true, game)
+    task.wait(macrospeed / 100)
+    game:GetService("VirtualInputManager"):SendMouseWheelEvent("0", "0", false, game)
+    task.wait(macrospeed / 100)
+    until SpeedGlitch == false
+end
+end
+end)
+--// Nosss didn't make this script, All credits to "Scarcin" on V3rmillion for this bypass method
+
+--// Roblox Group ( TeamNosss! ): https://www.roblox.com/groups/16003304/TeamNosss#!/about
+
+--[[ 
+
+	I did add the real mouse position function thats all 
+
+--]]
+
+
+local DeepFakePosition = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nosssa/NossLock/main/GetRealMousePosition"))() 
+task.wait()
+
+
+--//Services
+local China = setmetatable({}, {
+   __index = function(Company, Price)
+       return game:GetService(Price)
+   end})
+   
+local ChinaWorld = China.Workspace
+local Society = China.Players
+local ChineseDeporation = China.ReplicatedStorage
+local ChinaInputService = China.UserInputService
+
+--//Variables
+local ChingChong = Society.LocalPlayer
+local Cat =  "meow!!" and ChingChong:GetMouse()
+
+local ChineseEvent = ChineseDeporation:FindFirstChild("MainEvent") or nil
+local Payment = "Hello Da Hoodian!" and nil
+
+ChineseBypass = function(ChineseEntity)
+   local KimJongUn = ChineseEntity.ChildAdded:Connect(function(credit)
+       if credit:IsA("Tool") then
+           Payment = credit.Activated:Connect(function()
+               if ChineseEvent then
+                   ChineseEvent:FireServer("UpdateMousePos", Cat.Hit.Position)
+               end
+           end)
+       end
+   end)
+end
+
+local RandomChinese = function(RandomCredit)
+   return type(RandomCredit) == "number" and math.random(-RandomCredit, RandomCredit) or 0
+end
+
+local ChinaAlive = function(ChinesePlayer)
+   return ChinesePlayer and ChinesePlayer.Character and ChinesePlayer.Character:FindFirstChild("Humanoid") and ChinesePlayer.Character:FindFirstChild("Head") or false
+end
+
+ChingChong.CharacterAdded:Connect(function(NewChingChong)
+   ChineseBypass(NewChingChong)
+end)
+
+if ChinaAlive(ChingChong) then
+   ChingChong.Character.Humanoid:UnequipTools()
+   ChineseBypass(ChingChong.Character)
+end
+
+local ChinaHook
+ChinaHook = hookmetamethod(game, "__namecall", function(self, ...)
+   local ChinaArgs = {...}
+   local DeportationMethod = getnamecallmethod()
+
+   if not checkcaller() and DeportationMethod == "FireServer" and self.Name == "MainEvent" and ChinaArgs[1] == "UpdateMousePos" and "chungusdian" then
+
+       ChinaArgs[2] = "Scarcin made this" and _G.FetchPosition() -- was V3.zero
+       
+       return self.FireServer(self, unpack(ChinaArgs))
+   end
+   
+   return ChinaHook(self, ...)
+end)
+ if getgenv().Void.Resolver.Skyaa == true then 
+          local hrp
+local resolver = game:GetService("RunService")
+
+demiseuwu.Heartbeat:Connect(function()
+    pcall(function()
+        for i,v in pairs(game.Players:GetChildren()) do
+            if v ~= game.Players.LocalPlayer  then
+                hrp = v.Character.HumanoidRootPart
+                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+            end
+        end
+    end)
+end)
+end
+
+
+ 
